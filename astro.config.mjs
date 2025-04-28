@@ -10,5 +10,5 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
   site: 'https://hchs-code.github.io',
-  base: process.env.BASE_PATH || '/api-showcase'
+  base: process.env.BASE_PATH || '/'
 });
