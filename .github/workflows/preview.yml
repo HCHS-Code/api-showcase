@@ -55,9 +55,19 @@ jobs:
         with:
           script: |
             const previewUrl = `https://hchs-code.github.io/api-showcase/pr-preview/${context.payload.pull_request.number}/`;
-            await github.rest.issues.createComment({
-              issue_number: context.payload.pull_request.number,
+            const prNumber = context.payload.pull_request.number;
+            const repository = context.payload.repository.name;
+            
+            console.log('Creating comment on PR:', {
               owner: context.repo.owner,
-              repo: context.repo.name,
+              repo: repository,
+              issue_number: prNumber,
+              previewUrl
+            });
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: repository,
+              issue_number: prNumber,
               body: `🚀 Preview deployment is ready!\n\nPreview: ${previewUrl}`
             });
