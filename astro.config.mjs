@@ -9,5 +9,6 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
-  base: process.env.BASE_PATH || '/',
+  site: 'https://hchs-code.github.io',
+  base: process.env.BASE_PATH || '/api-showcase'
 });
