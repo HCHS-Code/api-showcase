@@ -12,7 +12,10 @@ export default function CatGallery() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function fetchCatImages() {
+  async function fetchCatImages(e: React.FormEvent) {
+    e.preventDefault();
+    if (!tag.trim()) return;
+
     setLoading(true);
     setError(null);
 
@@ -38,21 +41,23 @@ export default function CatGallery() {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <div className="mb-8">
-        <input
-          type="text"
-          placeholder="Search by tag (e.g., cute, funny)"
-          value={tag}
-          onChange={(e) => setTag(e.target.value)}
-          className="w-full max-w-md px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-        />
-        <button
-          onClick={fetchCatImages}
-          className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-        >
-          Search Cats
-        </button>
-      </div>
+      <form onSubmit={fetchCatImages} className="mb-8">
+        <div className="mb-8">
+          <input
+            type="text"
+            placeholder="Search by tag (e.g., cute, funny)"
+            value={tag}
+            onChange={(e) => setTag(e.target.value)}
+            className="w-full max-w-md px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          />
+          <button
+            type="submit"
+            className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            Search Cats
+          </button>
+        </div>
+      </form>
 
       {loading && <div className="text-center text-gray-600">Loading...</div>}
       {error && <div className="text-center text-red-500">{error}</div>}
