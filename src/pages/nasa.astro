@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NasaApod from '../components/NasaApod';
+---
+
+<Layout title="NASA APOD - API Showcase" activePage="nasa">
+	<NasaApod client:load />
+</Layout>
