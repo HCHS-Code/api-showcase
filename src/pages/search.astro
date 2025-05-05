@@ -1,0 +1,12 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CatGallery from '../components/CatGallery.astro';
+
+const tag = Astro.url.searchParams.get('tag') || '';
+---
+
+<Layout title={tag ? `Cat Gallery - ${tag}` : 'Cat Gallery'} activePage="search">
+  <main>
+    <CatGallery tag={tag} />
+  </main>
+</Layout>
