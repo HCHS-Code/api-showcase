@@ -1,11 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import CatGallery from '../components/CatGallery';
+import CatGallery from '../components/CatGallery.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const tag = Astro.url.searchParams.get('tag') || '';
 ---
 
-<Layout title="Cat Gallery - API Showcase" activePage="cats">
-	<CatGallery client:load />
+<Layout title={"Cat By Tag - API Showcase"} activePage="cats">
+  <main>
+    <CatGallery tag={tag} />
+  </main>
 </Layout>
