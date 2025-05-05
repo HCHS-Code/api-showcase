@@ -1,7 +1,25 @@
 ---
+// Define inappropriate tags to filter out
+const inappropriateTags = [
+  'beer',
+  'nsfw',
+  'nazi',
+  'drugs',
+  'drunk',
+  'fatass',
+  'shit',
+  'suicide',
+  'wtf'
+].map(tag => tag.toLowerCase());
+
 // Get all available tags at build time
 const tagsResponse = await fetch('https://cataas.com/api/tags');
-const allTags: string[] = await tagsResponse.json();
+const rawTags: string[] = await tagsResponse.json();
+
+// Filter out inappropriate tags
+const allTags = rawTags.filter(tag => 
+  !inappropriateTags.includes(tag.toLowerCase())
+);
 
 interface CatImage {
   id: string;
@@ -58,7 +76,7 @@ const initialCats: CatImage[] = [];
   }
 
   let currentPage = 1;
-  const itemsPerPage = 9;
+  const itemsPerPage = 6;
   let currentTag = '';
   let loading = false;
 
@@ -108,10 +126,28 @@ const initialCats: CatImage[] = [];
     }
   }
 
+  // Define inappropriate tags (same as server-side)
+  const inappropriateTags = [
+    'beer',
+    'nsfw',
+    'nazi',
+    'drugs',
+    'drunk',
+    'fatass',
+    'shit',
+    'suicide',
+    'wtf'
+  ].map(tag => tag.toLowerCase());
+
   function renderCats(cats: CatImage[]) {
     if (!catsGridEl) return;
 
-    catsGridEl.innerHTML = cats.map((cat: CatImage) => `
+    // Filter out cats that have any inappropriate tags
+    const filteredCats = cats.filter(cat => 
+      !cat.tags.some(tag => inappropriateTags.includes(tag.toLowerCase()))
+    );
+
+    catsGridEl.innerHTML = filteredCats.map((cat: CatImage) => `
       <div class="bg-white rounded-lg shadow-lg overflow-hidden">
         <img
           src="https://cataas.com/cat/${cat.id}"
@@ -121,13 +157,15 @@ const initialCats: CatImage[] = [];
         />
         <div class="p-4">
           <div class="flex flex-wrap gap-2">
-            ${cat.tags.map((tag: string) => `
-              <span class="px-2 py-1 bg-gray-100 text-sm text-gray-600 rounded-full cursor-pointer hover:bg-gray-200"
-                onclick="selectTag('${tag}')"
-              >
-                #${tag}
-              </span>
-            `).join('')}
+            ${cat.tags
+              .filter(tag => !inappropriateTags.includes(tag.toLowerCase()))
+              .map((tag: string) => `
+                <span class="px-2 py-1 bg-gray-100 text-sm text-gray-600 rounded-full cursor-pointer hover:bg-gray-200"
+                  onclick="selectTag('${tag}')"
+                >
+                  #${tag}
+                </span>
+              `).join('')}
           </div>
         </div>
       </div>
